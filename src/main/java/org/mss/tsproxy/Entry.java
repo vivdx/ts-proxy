@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
  * represents an entry object in the Meaningful Spatial Statistics portal
  * 
  * @author staschc
+ * @edit vivek
  *
  */
 public class Entry {
@@ -30,7 +31,128 @@ public class Entry {
 	private String isoBegin;
 	private String isoEnd;
 
+
+	 
+	private String idTitle;
+    private String idProject;
+    private String InstituteURL;
+    private String idAuthor;
+    private String idAbstract;
+    private String idKeyword;
+    private String idCitation;
+    private String varType;
+	private String idParameter;
+    private String idUnit; 
+	  
+	  
+
+	 
+	public Entry(URL sourceUrl, String dataFormat, URL type, String license, 
+			String phenomenonUri, String wktPolygon, String isoBegin, String isoEnd,
+			String idTitle, private String idProject, String InstituteURL , String idAuthor, String idAbstract, String idKeyword, String idCitation, String varType, String idParameter, String idUnit) {
+		this.sourceUrl = sourceUrl;
+		this.dataFormat = dataFormat;
+		this.dataType = type;
+		this.license = license;
+		this.phen = phenomenonUri;
+		this.wktPolygon = wktPolygon;
+		this.isoBegin = isoBegin;
+		this.isoEnd = isoEnd;
+		
+		this.idTitle = idTitle;
+	    this.idProject = idProject;
+	    this.InstituteURL = InstituteURL;
+	    this.idAuthor = idAuthor;
+	    this.idAbstract = idAbstract;
+	    this.idKeyword = idKeyword;
+	    this.idCitation = idCitation;
+	    this.varType = varType;
+		this.format=format;
+	    this.idParameter=idParameter;
+	    this.idUnit=idUnit;
+		
+	}
+	 public static Entry createFromJSON(JSONObject input){
+		Entry entry = null;
+		try {
+			URL sourceUrl = new URL(input.getString(JsonNames.SOURCE_URL));
+			String dataFormat = input.getString(JsonNames.FORMAT);
+			String dataTypeString = input.getString(JsonNames.DATA_TYPE);
+			URL dataType = new URL(dataTypeString);
+			String license = input.getString(JsonNames.LICENSE);
+			String phen = input.getString(JsonNames.PHENOMENON);
+			String wktPolygon = input.getString(JsonNames.OBS_WIN_WKT);
+			String isoBegin = input.getString(JsonNames.OBS_WIN_TMP_START);
+			String isoEnd = input.getString(JsonNames.OBS_WIN_TMP_END);
+			
+			String idTitle = input.getString(JsonNames.TITLE);
+		    String idProject = input.getString(JsonNames.PROJECT);
+		    String InstituteURL = new URL(input.getString(JsonNames.INSTITUTE_URL));
+		    String idAuthor = input.getString(JsonNames.AUTHOR);
+		    String idAbstract = input.getString(JsonNames.ABSTRACT);
+		    String idKeyword = input.getString(JsonNames.KEYWORD);
+		    String idCitation= input.getString(JsonNames.CITATION);
+		    String varType = input.getString(JsonNames.VARTYPE);
+			string idParameter = input.getString(JsonNames.PARAMETER);
+		    string idUnit = input.getString(JsonNames.UNIT);
+			
+			entry = new Entry(sourceUrl,dataFormat,dataType,license,phen,wktPolygon,isoBegin,isoEnd, idTitle, idProject, InstituteURL, idAuthor, idAbstract, idKeyword, idCitation, varType, idParameter, idUnit);
+		} catch (MalformedURLException e) {
+			log.error("Error while creating entry from JSON input!",e);
+		} catch (JSONException e) {
+			log.error("Error while creating entry from JSON input!",e);
+		}
+		return entry;
+	}
 	
+	public static Entry createFromRDF(){
+		return null;	
+	}
+	
+	public static Entry createDefault(){
+		Entry entry = null;
+		try {
+			 entry = new Entry(new URL("http://www.meaningfulspatialstatistics.org/theories/MeaningfulSpatialStatistics.owl#PointPattern123"),
+					"SHPX",new URL("http://www.meaningfulspatialstatistics.org/theories/MeaningfulSpatialStatistics.owl#MarkedSpatioTemporalPointPattern"),"GPLv2","http://sweet.jpl.nasa.gov/2.2/matrAerosol.owl#PM10","POLYGON(10.1 10.2, 10.3 10.4)","2010-01-01T00:00:00Z","2011-01-01T00:00:00Z"
+			);
+		} catch (MalformedURLException e) {
+			log.error("Error while creating default entry object!");
+		}
+		return entry;
+	}
+	 
+	 public JSONObject toJSON(){
+		JSONObject entryJ = new JSONObject();
+		try {
+			entryJ.put(JsonNames.SOURCE_URL,this.sourceUrl.toExternalForm());
+			entryJ.put(JsonNames.FORMAT,this.dataFormat);
+			entryJ.put(JsonNames.DATA_TYPE, this.dataType.toExternalForm());
+			entryJ.put(JsonNames.LICENSE, this.license);
+			entryJ.put(JsonNames.PHENOMENON, this.phen);
+			entryJ.put(JsonNames.OBS_WIN_WKT, this.wktPolygon);
+			entryJ.put(JsonNames.OBS_WIN_TMP_START, this.isoBegin);
+			entryJ.put(JsonNames.OBS_WIN_TMP_END, this.isoEnd);
+			
+			entryJ.put(JsonNames.TITLE,this.idTitle);
+			entryJ.put(JsonNames.PROJECT,this.idProject);
+			entryJ.put(JsonNames.INSTITUTE,this.InstituteURL);
+			entryJ.put(JsonNames.AUTHOR,this.idAuthor);
+			entryJ.put(JsonNames.ABSTRACT,this.idAbstract);
+			entryJ.put(JsonNames.KEYWORD,this.idKeyword);
+			entryJ.put(JsonNames.CITATION,this.idCitation);
+			entryJ.put(JsonNames.VARTYPE,this.varType);
+			entryJ.put(JsonNames.PARAMETER,this.idParameter);
+			entryJ.put(JsonNames.UNIT,this.idUnit);
+						
+		} catch (JSONException e) {
+			log.error("Error while encoding entry object ",e);
+		}
+		return entryJ;
+	}
+
+	  
+	 /** OLD_Depriciated
+	  
 	public Entry(URL sourceUrl, String dataFormat, URL type, String license, 
 			String phenomenonUri, String wktPolygon, String isoBegin, String isoEnd) {
 		this.sourceUrl = sourceUrl;
@@ -97,7 +219,9 @@ public class Entry {
 		}
 		return entryJ;
 	}
-
+	 */
+	  
+	 
 	/**
 	 * @return the log
 	 */
@@ -161,5 +285,39 @@ public class Entry {
 		return isoEnd;
 	}
 	
+	
+	 public String getidTitle() {
+		return idTitle;
+	 }
+		
+	public String idProject() {
+		return idProject;
+	}
+		
+	public String getidInstituteURL() {
+		return InstituteURL;
+	}
+	public String getidAuthor() {
+		return idAuthor;
+	}	
+	public String getidAbstract() {
+		return idAbstract;	
+	}
+	public String getidKeyword() {
+		return idKeyword;					
+	}				
+	public String getidCitation() {
+		return idCitation;	
+	}	
+	public String getvarType() {
+		return varType;						
+	}	
+	public String getidParameter() {
+		return idParameter;						
+	}					
+	public String getidUnit() {
+		return idUnit;	
+	}					
+	 
 	
 }
