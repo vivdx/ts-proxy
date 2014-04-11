@@ -37,7 +37,7 @@ import org.mss.tsproxy.Constants.VariableTypes;
  * store
  * 
  * @author staschc
- * 
+ * @edit vivek
  */
 public class TSProxy {
 
@@ -89,6 +89,8 @@ public class TSProxy {
 			model.setNsPrefix(RDFNamespacePrefixes.GEOSPARQL,
 					RDFNamespaces.GEOSPARQL);
 			model.setNsPrefix(RDFNamespacePrefixes.TIME, RDFNamespaces.TIME);
+			
+			model.setNsPrefix(RDFNamespacePrefixes.UCUM, RDFNamespaces.UCUM);
 
 			// create observation data resource
 			Resource resource = model.createResource(entry.getSourceUrl()
@@ -109,7 +111,62 @@ public class TSProxy {
 				resource.addProperty(
 						model.createProperty(RDFNamespaces.MSS, "represents"),
 						entry.getPhen());
-
+			//** NEW UPDATE
+			if (!entry.getidInstituteURL().equals(""))				
+				resource.addProperty(
+						model.createProperty(entry.getidInstituteURL().toString()), RDFNamespaces.DCTERMS, "publisher" );	
+					
+			
+			if (!entry.getidTitle().equals(""))
+				resource.addProperty(
+						model.createProperty(RDFNamespaces.DCTERMS, "title"),
+						entry.getidTitle());
+		
+			if (!entry.getidProject().equals(""))
+				resource.addProperty(
+						model.createProperty(RDFNamespaces.DCTERMS, "contributor"),
+						entry.getidProject());			
+			
+						
+			if (!entry.getidAuthor().equals(""))
+				resource.addProperty(
+						model.createProperty(RDFNamespaces.DCTERMS, "creator"),
+						entry.getidAuthor());
+						
+			if (!entry.getidAbstract().equals(""))
+				resource.addProperty(
+						model.createProperty(RDFNamespaces.DCTERMS, "abstract"),
+						entry.getidAbstract());
+		
+			if (!entry.getidKeyword().equals(""))
+				resource.addProperty(
+						model.createProperty(RDFNamespaces.DCTERMS, "subject"),
+						entry.getidKeyword());
+			
+			if (!entry.getidCitation().equals(""))
+				resource.addProperty(
+						model.createProperty(RDFNamespaces.DCTERMS, "bibliographicCitation"),
+						entry.getidCitation());
+			
+			if (!entry.getidParameter().equals(""))
+				resource.addProperty(
+						model.createProperty(RDFNamespaces.DCTERMS, "description"),
+						entry.getidParameter());
+			
+			if (!entry.getidUnit().equals(""))
+				resource.addProperty(
+						model.createProperty(RDFNamespaces.UCUM, "UCUM Code"),
+						entry.getidUnit());
+		//	*/
+			
+			/**
+			 * if (!entry.getPhen().equals(""))
+				resource.addProperty(
+						model.createProperty(RDFNamespaces.MSS, "represents"),
+						entry.getPhen());
+			 
+			 * 
+			 */
 			Property varTypeProp = model.createProperty(RDFNamespaces.MSS,
 					"ofVariableType");
 			Property genByProp = model.createProperty(RDFNamespaces.MSS,
@@ -232,9 +289,21 @@ public class TSProxy {
 			Literal phen = result.getLiteral("phen");
 			Literal license = result.getLiteral("license");
 			Literal format = result.getLiteral("format");
+			
+			Literal idTitle = result.getLiteral("idTitle");
+			Literal idProject = result.getLiteral("idProject");
+			Resource idInstituteURL = result.getResource("idInstituteURl");
+			Literal idAuthor = result.getLiteral("idAuthor");
+			Literal idAbstract = result.getLiteral("idAbstract");
+			Literal idKeyword = result.getLiteral("idKeyword");
+			Literal idCitation = result.getLiteral("idCitation");
+			Literal idParameter = result.getLiteral("idParameter");
+			Literal idUnit = result.getLiteral("idUnit");
+						
 			Entry entry = new Entry(new URL(sourceURL.getURI()),
 					format.getString(), new URL(variableType),
-					license.getString(), phen.getString(), "", "", "");
+					license.getString(), phen.getString(), "", "", "",idTitle.getString(),idProject.getString(),new URL(idInstituteURL.getURI()),
+					idAuthor.getString(),idAbstract.getString(),idKeyword.getString(),idCitation.getString(),idParameter.getString(),idUnit.getString());
 			entries.add(entry);
 		}
 		return entries;

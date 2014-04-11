@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
  * constants used for JSON and RDF
  * 
  * @author staschc
- *
+ * @edit vivek
  */
 public class Constants {
 	
@@ -26,7 +26,18 @@ public class Constants {
 		public static final String PHENOMENON = "phenomenon";
 		public static final String OBS_WIN_WKT = "obsWindowWKT";
 		public static final String OBS_WIN_TMP_START = "obsWindowTempStart";
-		public static final String OBS_WIN_TMP_END = "obsWindowTempEnd";	
+		public static final String OBS_WIN_TMP_END = "obsWindowTempEnd";
+		
+		public static final String TITLE = "idTitle";
+		public static final String PROJECT= "idProject";
+		public static final String INSTITUTE_URL= "idInstituteURL";
+		public static final String AUTHOR= "idAuthor";
+		public static final String ABSTRACT= "idAbstract";
+		public static final String KEYWORD= "idKeyword";
+		public static final String CITATION= "idCitation";
+		public static final String PARAMETER= "idParameter";
+		public static final String UNIT= "idUnit";
+		
 	}
 	
 	abstract class RDFProperties {
@@ -37,6 +48,16 @@ public class Constants {
 		public static final String OBS_WIN_WKT = "obsWindowWKT";
 		public static final String OBS_WIN_TMP_START = "obsWindowTempStart";
 		public static final String OBS_WIN_TMP_END = "obsWindowTempEnd";	
+		
+		public static final String TITLE = "idTitle";
+		public static final String PROJECT= "idProject";
+		public static final String INSTITUTE_URL= "idInstituteURL";
+		public static final String AUTHOR= "idAuthor";
+		public static final String ABSTRACT= "idAbstract";
+		public static final String KEYWORD= "idKeyword";
+		public static final String CITATION= "idCitation";
+		public static final String PARAMETER= "idParameter";
+		public static final String UNIT= "idUnit";
 	}
 	
 	abstract class RDFNamespacePrefixes{
@@ -48,6 +69,7 @@ public class Constants {
 		public static final String OWL = "owl";
 		public static final String TIME = "time";
 		public static final String STF = "stf";
+		public static final String UCUM = "ucum";
 		
 	}
 	
@@ -60,6 +82,7 @@ public class Constants {
 		public static final String OWL = "http://www.w3.org/2002/07/owl#";
 		public static final String TIME = "http://www.w3.org/2006/time#";
 		public static final String STF = "http://www.geographicknowledge.de/vocab/SpatioTemporalFeature#";
+		public static final String UCUM = "http://ontology-of-clinical-research.googlecode.com/svn/trunk/Archive/ucum.owl";
 	}
 	
 	abstract class VariableTypes{
