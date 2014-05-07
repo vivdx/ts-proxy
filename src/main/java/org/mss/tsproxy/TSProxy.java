@@ -70,7 +70,8 @@ public class TSProxy {
 		RemoteModel rmParliament = new RemoteModel(parliamentURL + "/sparql",
 				parliamentURL + "/bulk");
 		try {
-			rmParliament.insertStatements(createModel4Entry(entry));
+			Model model = createModel4Entry(entry);
+			rmParliament.insertStatements(model);
 		} catch (IOException e) {
 			log.error("Error while inserting entry into parliament", e);
 			throw e;
@@ -147,6 +148,11 @@ public class TSProxy {
 				resource.addProperty(
 						model.createProperty(RDFNamespaces.DCTERMS, "bibliographicCitation"),
 						entry.getidCitation());
+			
+			if (!entry.getcomment().equals(""))
+				resource.addProperty(
+						model.createProperty(RDFNamespaces.DCTERMS, "description"),
+						entry.getcomment());
 			
 			if (!entry.getidParameter().equals(""))
 				resource.addProperty(
@@ -297,13 +303,14 @@ public class TSProxy {
 			Literal idAbstract = result.getLiteral("idAbstract");
 			Literal idKeyword = result.getLiteral("idKeyword");
 			Literal idCitation = result.getLiteral("idCitation");
+			Literal comment = result.getLiteral("comment");
 			Literal idParameter = result.getLiteral("idParameter");
 			Literal idUnit = result.getLiteral("idUnit");
 						
 			Entry entry = new Entry(new URL(sourceURL.getURI()),
 					format.getString(), new URL(variableType),
 					license.getString(), phen.getString(), "", "", "",idTitle.getString(),idProject.getString(),new URL(idInstituteURL.getURI()),
-					idAuthor.getString(),idAbstract.getString(),idKeyword.getString(),idCitation.getString(),idParameter.getString(),idUnit.getString());
+					idAuthor.getString(),idAbstract.getString(),idKeyword.getString(),idCitation.getString(),comment.getString(),idParameter.getString(),idUnit.getString());
 			entries.add(entry);
 		}
 		return entries;
@@ -313,7 +320,7 @@ public class TSProxy {
 	public static void main(String[] args) {
 		Entry entry = Entry.createDefault();
 		try {
-			TSProxy proxy = new TSProxy("http://giv-mss.uni-muenster.de:8081/parliament");
+			TSProxy proxy = new TSProxy("http://localhost:8081/parliament");
 			proxy.query("GEOST");
 			proxy.query("MSTPP");
 			proxy.query("SPP");

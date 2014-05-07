@@ -31,8 +31,6 @@ public class Entry {
 	private String isoBegin;
 	private String isoEnd;
 
-
-	 
 	private String idTitle;
     private String idProject;
     private URL idInstituteURL;
@@ -40,6 +38,7 @@ public class Entry {
     private String idAbstract;
     private String idKeyword;
     private String idCitation;
+    private String comment;
 	private String idParameter;
     private String idUnit;
 
@@ -48,7 +47,7 @@ public class Entry {
 	 
 	public Entry(URL sourceUrl, String dataFormat, URL type, String license, 
 			String phenomenonUri, String wktPolygon, String isoBegin, String isoEnd,
-			String idTitle, String idProject, URL idInstituteURL , String idAuthor, String idAbstract, String idKeyword, String idCitation, String idParameter, String idUnit) {
+			String idTitle, String idProject, URL idInstituteURL , String idAuthor, String idAbstract, String idKeyword, String idCitation,String comment, String idParameter, String idUnit) {
 		this.sourceUrl = sourceUrl;
 		this.dataFormat = dataFormat;
 		this.dataType = type;
@@ -65,6 +64,7 @@ public class Entry {
 	    this.idAbstract = idAbstract;
 	    this.idKeyword = idKeyword;
 	    this.idCitation = idCitation;
+	    this.comment = comment;
 	    this.idParameter=idParameter;
 	    this.idUnit=idUnit;
 		
@@ -89,10 +89,11 @@ public class Entry {
 		    String idAbstract = input.getString(JsonNames.ABSTRACT);
 		    String idKeyword = input.getString(JsonNames.KEYWORD);
 		    String idCitation= input.getString(JsonNames.CITATION);
+		    String comment= input.getString(JsonNames.COMMENT);
 			String idParameter = input.getString(JsonNames.PARAMETER);
 		    String idUnit = input.getString(JsonNames.UNIT);
 			
-			entry = new Entry(sourceUrl,dataFormat,dataType,license,phen,wktPolygon,isoBegin,isoEnd, idTitle, idProject, idInstituteURL, idAuthor, idAbstract, idKeyword, idCitation, idParameter, idUnit);
+			entry = new Entry(sourceUrl,dataFormat,dataType,license,phen,wktPolygon,isoBegin,isoEnd, idTitle, idProject, idInstituteURL, idAuthor, idAbstract, idKeyword, idCitation,comment, idParameter, idUnit);
 		} catch (MalformedURLException e) {
 			log.error("Error while creating entry from JSON input!",e);
 		} catch (JSONException e) {
@@ -110,7 +111,7 @@ public class Entry {
 		try {
 			 entry = new Entry(new URL("http://www.meaningfulspatialstatistics.org/theories/MeaningfulSpatialStatistics.owl#PointPattern123"),
 					"SHPX",new URL("http://www.meaningfulspatialstatistics.org/theories/MeaningfulSpatialStatistics.owl#MarkedSpatioTemporalPointPattern"),"GPLv2","http://sweet.jpl.nasa.gov/2.2/matrAerosol.owl#PM10","POLYGON(10.1 10.2, 10.3 10.4)","2010-01-01T00:00:00Z","2011-01-01T00:00:00Z",
-			"Title Meaningful", "Project- Master Thesis", new URL( "http://www.uni-muenster.de/Geoinformatics"),"Vivek","Abstract Unknown","ontology","stasch", "CO2", "ppm");
+			"Title Meaningful", "Project- Master Thesis", new URL( "http://www.uni-muenster.de/Geoinformatics"),"Vivek","Abstract Unknown","ontology","stasch","compliment", "CO2", "ppm");
 		} catch (MalformedURLException e) {
 			log.error("Error while creating default entry object!");
 		}
@@ -136,6 +137,7 @@ public class Entry {
 			entryJ.put(JsonNames.ABSTRACT,this.idAbstract);
 			entryJ.put(JsonNames.KEYWORD,this.idKeyword);
 			entryJ.put(JsonNames.CITATION,this.idCitation);
+			entryJ.put(JsonNames.COMMENT,this.comment);
 			entryJ.put(JsonNames.PARAMETER,this.idParameter);
 			entryJ.put(JsonNames.UNIT,this.idUnit);
 						
@@ -234,7 +236,9 @@ public class Entry {
 	public String getidCitation() {
 		return idCitation;	
 	}	
-
+	public String getcomment() {
+		return comment;	
+	}	
 	public String getidParameter() {
 		return idParameter;						
 	}					

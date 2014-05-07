@@ -51,7 +51,8 @@ public class TSProxyServlet {
 	
 	private static final Logger log = LoggerFactory.getLogger(TSProxyServlet.class);
 	
-	private static final String ENDPOINT = "http://giv-mss.uni-muenster.de:8081/parliament";
+	//private static final String ENDPOINT = "http://giv-mss.uni-muenster.de:8081/parliament";
+	private static final String ENDPOINT = "http://localhost:8081/parliament";
 
 	private WebApplicationException missingQueryParameter(String name) {
 		return new WebApplicationException(Response.status(Status.BAD_REQUEST)

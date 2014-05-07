@@ -35,6 +35,7 @@ public class Constants {
 		public static final String ABSTRACT= "idAbstract";
 		public static final String KEYWORD= "idKeyword";
 		public static final String CITATION= "idCitation";
+		public static final String COMMENT= "comment";
 		public static final String PARAMETER= "idParameter";
 		public static final String UNIT= "idUnit";
 		
@@ -56,6 +57,7 @@ public class Constants {
 		public static final String ABSTRACT= "idAbstract";
 		public static final String KEYWORD= "idKeyword";
 		public static final String CITATION= "idCitation";
+		public static final String Comment= "comment";
 		public static final String PARAMETER= "idParameter";
 		public static final String UNIT= "idUnit";
 	}
