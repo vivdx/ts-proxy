@@ -24,7 +24,8 @@ public class Entry {
 	private URL sourceUrl;
 	private String license;
 	private String dataFormat;
-	private URL dataType;
+//	private URL dataType;
+	private String dataType;
 	private String phen;
 	
 	private String wktPolygon;
@@ -45,7 +46,7 @@ public class Entry {
 		  
 
 	 
-	public Entry(URL sourceUrl, String dataFormat, URL type, String license, 
+	public Entry(URL sourceUrl, String dataFormat, String type, String license, 
 			String phenomenonUri, String wktPolygon, String isoBegin, String isoEnd,
 			String idTitle, String idProject, URL idInstituteURL , String idAuthor, String idAbstract, String idKeyword, String idCitation,String comment, String idParameter, String idUnit) {
 		this.sourceUrl = sourceUrl;
@@ -75,7 +76,7 @@ public class Entry {
 			URL sourceUrl = new URL(input.getString(JsonNames.SOURCE_URL));
 			String dataFormat = input.getString(JsonNames.FORMAT);
 			String dataTypeString = input.getString(JsonNames.DATA_TYPE);
-			URL dataType = new URL(dataTypeString);
+	//		URL dataType = new URL(dataTypeString);
 			String license = input.getString(JsonNames.LICENSE);
 			String phen = input.getString(JsonNames.PHENOMENON);
 			String wktPolygon = input.getString(JsonNames.OBS_WIN_WKT);
@@ -93,7 +94,7 @@ public class Entry {
 			String idParameter = input.getString(JsonNames.PARAMETER);
 		    String idUnit = input.getString(JsonNames.UNIT);
 			
-			entry = new Entry(sourceUrl,dataFormat,dataType,license,phen,wktPolygon,isoBegin,isoEnd, idTitle, idProject, idInstituteURL, idAuthor, idAbstract, idKeyword, idCitation,comment, idParameter, idUnit);
+			entry = new Entry(sourceUrl,dataFormat,dataTypeString,license,phen,wktPolygon,isoBegin,isoEnd, idTitle, idProject, idInstituteURL, idAuthor, idAbstract, idKeyword, idCitation, comment, idParameter, idUnit);
 		} catch (MalformedURLException e) {
 			log.error("Error while creating entry from JSON input!",e);
 		} catch (JSONException e) {
@@ -110,7 +111,7 @@ public class Entry {
 		Entry entry = null;
 		try {
 			 entry = new Entry(new URL("http://www.meaningfulspatialstatistics.org/theories/MeaningfulSpatialStatistics.owl#PointPattern123"),
-					"SHPX",new URL("http://www.meaningfulspatialstatistics.org/theories/MeaningfulSpatialStatistics.owl#MarkedSpatioTemporalPointPattern"),"GPLv2","http://sweet.jpl.nasa.gov/2.2/matrAerosol.owl#PM10","POLYGON(10.1 10.2, 10.3 10.4)","2010-01-01T00:00:00Z","2011-01-01T00:00:00Z",
+					"SHPX","http://www.meaningfulspatialstatistics.org/theories/MeaningfulSpatialStatistics.owl#MarkedSpatioTemporalPointPattern","GPLv2","http://sweet.jpl.nasa.gov/2.2/matrAerosol.owl#PM10","POLYGON(10.1 10.2, 10.3 10.4)","2010-01-01T00:00:00Z","2011-01-01T00:00:00Z",
 			"Title Meaningful", "Project- Master Thesis", new URL( "http://www.uni-muenster.de/Geoinformatics"),"Vivek","Abstract Unknown","ontology","stasch","compliment", "CO2", "ppm");
 		} catch (MalformedURLException e) {
 			log.error("Error while creating default entry object!");
@@ -123,7 +124,8 @@ public class Entry {
 		try {
 			entryJ.put(JsonNames.SOURCE_URL,this.sourceUrl.toExternalForm());
 			entryJ.put(JsonNames.FORMAT,this.dataFormat);
-			entryJ.put(JsonNames.DATA_TYPE, this.dataType.toExternalForm());
+	//		entryJ.put(JsonNames.DATA_TYPE, this.dataType.toExternalForm());
+			entryJ.put(JsonNames.DATA_TYPE, this.dataType);
 			entryJ.put(JsonNames.LICENSE, this.license);
 			entryJ.put(JsonNames.PHENOMENON, this.phen);
 			entryJ.put(JsonNames.OBS_WIN_WKT, this.wktPolygon);
@@ -180,7 +182,7 @@ public class Entry {
 	/**
 	 * @return the dataType
 	 */
-	public URL getDataType() {
+	public String getDataType() {
 		return dataType;
 	}
 

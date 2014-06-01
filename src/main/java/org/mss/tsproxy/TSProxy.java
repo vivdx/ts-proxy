@@ -179,7 +179,8 @@ public class TSProxy {
 					"generatedBy");
 			// set data type and depending on that optional spatial and temporal
 			// windows!
-			String varType = entry.getDataType().toExternalForm();
+//bug fix	//String varType = entry.getDataType().toExternalForm();
+			String varType = entry.getDataType();
 			if (varType.contains("PointPattern")) {
 				Resource ppObsFunction = model.createResource(Util
 						.generateURL().toExternalForm());
@@ -295,7 +296,7 @@ public class TSProxy {
 			Literal phen = result.getLiteral("phen");
 			Literal license = result.getLiteral("license");
 			Literal format = result.getLiteral("format");
-			
+				
 			Literal idTitle = result.getLiteral("idTitle");
 			Literal idProject = result.getLiteral("idProject");
 			Resource idInstituteURL = result.getResource("idInstituteURl");
@@ -308,7 +309,7 @@ public class TSProxy {
 			Literal idUnit = result.getLiteral("idUnit");
 						
 			Entry entry = new Entry(new URL(sourceURL.getURI()),
-					format.getString(), new URL(variableType),
+					format.getString(), variableType.toString(),
 					license.getString(), phen.getString(), "", "", "",idTitle.getString(),idProject.getString(),new URL(idInstituteURL.getURI()),
 					idAuthor.getString(),idAbstract.getString(),idKeyword.getString(),idCitation.getString(),comment.getString(),idParameter.getString(),idUnit.getString());
 			entries.add(entry);
