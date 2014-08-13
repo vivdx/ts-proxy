@@ -75,8 +75,8 @@ public class Entry {
 		try {
 			URL sourceUrl = new URL(input.getString(JsonNames.SOURCE_URL));
 			String dataFormat = input.getString(JsonNames.FORMAT);
-			String dataTypeString = input.getString(JsonNames.DATA_TYPE);
-	//		URL dataType = new URL(dataTypeString);
+			String dataTypeString = input.getString(JsonNames.DATA_TYPE); 		
+
 			String license = input.getString(JsonNames.LICENSE);
 			String phen = input.getString(JsonNames.PHENOMENON);
 			String wktPolygon = input.getString(JsonNames.OBS_WIN_WKT);
@@ -124,7 +124,7 @@ public class Entry {
 		try {
 			entryJ.put(JsonNames.SOURCE_URL,this.sourceUrl.toExternalForm());
 			entryJ.put(JsonNames.FORMAT,this.dataFormat);
-	//		entryJ.put(JsonNames.DATA_TYPE, this.dataType.toExternalForm());
+//			entryJ.put(JsonNames.DATA_TYPE, this.dataType.toExternalForm());
 			entryJ.put(JsonNames.DATA_TYPE, this.dataType);
 			entryJ.put(JsonNames.LICENSE, this.license);
 			entryJ.put(JsonNames.PHENOMENON, this.phen);

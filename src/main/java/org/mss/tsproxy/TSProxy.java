@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bbn.parliament.jena.joseki.client.RemoteModel;
+import com.hp.hpl.jena.datatypes.RDFDatatype;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
@@ -28,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mss.tsproxy.Constants;
+import org.mss.tsproxy.Constants.JsonNames;
 import org.mss.tsproxy.Constants.RDFNamespacePrefixes;
 import org.mss.tsproxy.Constants.RDFNamespaces;
 import org.mss.tsproxy.Constants.VariableTypes;
@@ -70,18 +72,42 @@ public class TSProxy {
 		RemoteModel rmParliament = new RemoteModel(parliamentURL + "/sparql",
 				parliamentURL + "/bulk");
 		try {
-			Model model = createModel4Entry(entry);
-			rmParliament.insertStatements(model);
+			List<Model> models = createModel4Entry(entry);
+			for (Model model : models) {
+				rmParliament.insertStatements(model);
+			}
+			
 		} catch (IOException e) {
 			log.error("Error while inserting entry into parliament", e);
 			throw e;
 		}
 	}
-
-	// TODO change to private method
-	private Model createModel4Entry(Entry entry) {
+	private List<Model> createModel4Entry(Entry entry) {
+		return createModel4Entry(entry, null);
+	}
+	
+	// TODO change to private method  //new
+	private List<Model> createModel4Entry(Entry entry, String varType0) {
+		List<Model> models = new ArrayList<Model>();
 		Model model = null;
 		try {
+			String varType = varType0 == null ? entry.getDataType() : varType0;
+			//new		
+			if(varType.startsWith("[")&& varType.endsWith("]")){
+				// its an array String[] col = varType.replace("[", "").replace("]", "").split(",");
+				
+				String[] col = varType.replace("[", "").replace("]", "").replace("\"", "").split(",");
+				
+				for(String s : col) {
+					 
+					Entry arrayEntry = entry;
+					models.add(createModel4Entry(arrayEntry, s).get(0));
+							
+				}
+				return models;
+			}
+			
+			
 			model = ModelFactory.createDefaultModel();
 			// set up namespaces
 			model.setNsPrefix(RDFNamespacePrefixes.MSS, RDFNamespaces.MSS);
@@ -179,8 +205,9 @@ public class TSProxy {
 					"generatedBy");
 			// set data type and depending on that optional spatial and temporal
 			// windows!
-//bug fix	//String varType = entry.getDataType().toExternalForm();
-			String varType = entry.getDataType();
+
+			
+			//.toExternalForm();
 			if (varType.contains("PointPattern")) {
 				Resource ppObsFunction = model.createResource(Util
 						.generateURL().toExternalForm());
@@ -255,7 +282,7 @@ public class TSProxy {
 				geostatObsFunction.addProperty(rdfTypeProp, RDFNamespaces.MSS
 						+ "ObservationFunction");
 				resource.addProperty(genByProp, geostatObsFunction);
-
+							
 			} else if (varType.contains("Lattice")) {
 				Resource latticeObsFunction = model.createResource(Util
 						.generateURL().toExternalForm());
@@ -279,7 +306,8 @@ public class TSProxy {
 		} catch (MalformedURLException e) {
 			log.error("Error while generating RDF from entry", e);
 		}
-		return model;
+		models.add(model);
+		return models;
 	}
 
 	private Collection<Entry> issueSelectQuery(String sparqlSelectQuery, String variableType)
